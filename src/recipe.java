@@ -199,60 +199,37 @@ public class recipe {
                         System.out.println(e);
                     }
 
-
-
-
-                case 6:
-                    System.out.println("Delete a Recipe");
-                    System.out.println("Enter the Recipe name: ");
-                    recipeTitle = input.next();
-
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
-                        String sql = "DELETE FROM `recipes` WHERE `title` = '" +recipeTitle+"'";
-                        Statement stmt = con.createStatement();
-                        stmt.executeUpdate(sql);
-                        System.out.println("Recipe deleted successfully.");
-                    }
-                    catch (Exception e){
-                        System.out.println(e);
-                    }
-
-
-                    break;
-
-
-                case 6:
-                    System.out.println("Display total recipes in each category");
-                    try{
-                        Class.forName("com.mysql.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb","root","");
-                        String sql ="SELECT COUNT(*)AS total,`recipecategory` FROM `recipes`  GROUP BY `recipecategory`";
-                        Statement stmt = con.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-                        System.out.println("-------------------------------------");
-                        while(rs.next()){
-                            String fetchTotal = rs.getString("total");
-                            String fetchCategory = rs.getString("recipecategory");
-
-
-                            System.out.print("Total  : "+fetchTotal+" |");
-                            System.out.print(" Category : "+fetchCategory+"\n");
-
-
-
-                        }
-                        System.out.println("-------------------------------------");
-                    }
-                    catch (Exception e){
-                        System.out.println(e);
-                    }
-
-
-
                 case 7:
                     System.out.println("View recipes in a specific category");
+                    System.out.println("Enter the category search: ");
+                    recipeCategory = input.next();
+
+                    try{
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/recipedb", "root", "");
+                        String sql = "SELECT  `title`, `description`, `preparedby`, `ingredients` FROM `recipes` WHERE `recipecategory` = '"+recipeCategory+"'";
+
+
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while(rs.next()){
+                            String fetchRecipeName = rs.getString("title");
+                            String fetchRecipeDesc = rs.getString("description");
+                            String fetchRecipePreparedBy = rs.getString("preparedby");
+                            String fetchRecipeIngredients = rs.getString("ingredients");
+
+
+                            System.out.println("Recipe Name: "+fetchRecipeName);
+                            System.out.println("Description : "+fetchRecipeDesc);
+                            System.out.println("Prepared By : "+fetchRecipePreparedBy);
+                            System.out.println("Ingredients : "+fetchRecipeIngredients+"\n");
+
+                        }
+
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
 
                     break;
                 case 8:
